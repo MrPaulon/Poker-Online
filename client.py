@@ -11,3 +11,5 @@ r = s.recv(9999999)
 with open(file_name,'wb') as _file:
     _file.write(r)
 print("Le fichier a été correctement copié dans : %s." % file_name)
+
+saucisse
