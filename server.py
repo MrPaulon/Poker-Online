@@ -23,7 +23,7 @@ class ClientThread(threading.Thread):
 
 tcpsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcpsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-tcpsock.bind(("172.20.35.61",12086))
+tcpsock.bind(("141.94.98.66",12086))
 
 while True:
     tcpsock.listen(10)
