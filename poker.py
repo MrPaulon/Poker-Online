@@ -12,15 +12,18 @@ cartesPasDispo = []
 
 class Game():
     plateau = []
-    def __init__(self):
-        self.mise = {"mise": 20}
+    def __init__(self, nbJoueurs):
+        self.mise = {"mise": 20, "derniereMise": 0}
+        self.nbJoueurs = nbJoueurs
 
 class Poker():
     """Class pour le Poker"""
-    def __init__(self, nom, solde = 500):
+    def __init__(self, nom, id, solde = 500):
         self.nom = nom
         self.solde = solde
         self.main = []
+        self.id = id
+        self.blind = 0
 
     def distribution(self):
         if len(self.main) == 2:
@@ -37,9 +40,10 @@ class Poker():
 
 
 
+
 def jouer(joueur, game):
-    print("la mise actuelle est de:", game.mise["mise"])
-    manche = int(input("Que voulez vous faire ? \n [1] Vous couchez \n [2] Suivre avec une mise de 200 \n [3] Relancer \n"))
+    print("La mise actuelle du plateau est de:", game.mise["derniereMise"])
+    manche = int(input("Que voulez vous faire ? \n [1] Vous couchez \n [2] Suivre la mise\n [3] Relancer \n"))
     if manche == 1:
         print("Vous vous êtes couchez")
     elif manche == 2:
@@ -48,13 +52,15 @@ def jouer(joueur, game):
     elif manche == 3:
         montant = int(input("De combien voulez-vous relancez: "))
         joueur.solde -= montant
+        game.mise["derniereMise"] = montant
+        game.mise["mise"] = montant
         print("Vous avez relancez avec", montant, "\nvotre solde est actuellement de", joueur.solde)
 
 #Pygame
 ###Fennetre
 ##pygame.init()
 ##screen = pygame.display.set_mode((600, 480))
-##pygame.display.set_caption('Basic Pygame program')
+##pygame.display.set_caption('Poker Online')
 ##
 ### Fill background
 ##background = pygame.Surface(screen.get_size())
