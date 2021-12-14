@@ -4,7 +4,7 @@ import random
 from random import *
 
 #fonctions
-cartes = [["1trefle", "1pic", "1coeur", "1careaux"], ["2trefle", "2pic", "2coeur", "2carreaux"], ["3trefle", "3pic", "3coeur", "3carreaux"], ["4trefle", "4pic", "4coeur", "4carreaux"], ["4trefle", "4pic", "4coeur", "4carreaux"], ["5trefle", "5pic", "5coeur", "5carreaux"], ["6trefle", "6pic", "6coeur", "6carreaux"], ["7trefle", "7pic", "7coeur", "7carreaux"], ["8trefle", "8pic", "8coeur", "8carreaux"], ["9trefle", "9pic", "9coeur", "9carreaux"], ["10trefle", "10pic", "10coeur", "10carreaux"], ["Vtrefle", "Vpic", "Vcoeur", "Vcarreaux"], ["Qtrefle", "Qpic", "Qcoeur", "Qcarreaux"], ["Rtrefle", "Rpic", "Rcoeur", "Rcarreaux"]]
+cartes = [["1trefle", "1pique", "1coeur", "1careaux"], ["2trefle", "2pique", "2coeur", "2carreaux"], ["3trefle", "3pique", "3coeur", "3carreaux"], ["4trefle", "4pique", "4coeur", "4carreaux"], ["4trefle", "4pique", "4coeur", "4carreaux"], ["5trefle", "5pique", "5coeur", "5carreaux"], ["6trefle", "6pique", "6coeur", "6carreaux"], ["7trefle", "7pique", "7coeur", "7carreaux"], ["8trefle", "8pique", "8coeur", "8carreaux"], ["9trefle", "9pique", "9coeur", "9carreaux"], ["10trefle", "10pique", "10coeur", "10carreaux"], ["Vtrefle", "Vpique", "Vcoeur", "Vcarreaux"], ["Qtrefle", "Qpique", "Qcoeur", "Qcarreaux"], ["Rtrefle", "Rpique", "Rcoeur", "Rcarreaux"]]
 
 cartesPasDispo = []
 
