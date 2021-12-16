@@ -1,4 +1,4 @@
-# Créé par nantou, le 30/11/2021 en Python 3.7
+# Créé par paul, le 30/11/2021 en Python 3.7
 #import
 import random
 from random import *
@@ -85,11 +85,3 @@ def changementManche(game, ancienJoueur):
         jouer(game.joueurs[ancienJoueur.id+1], game)
     else:
         jouer(game.joueurs[0], game)
-
-
-game1 = Game(2)
-joueur1 = Joueur("MrPaulon", 0)
-joueur2 = Joueur("Max", 1)
-game1.ajoutJoueur(0, joueur1)
-game1.ajoutJoueur(1, joueur2)
-jouer(joueur1, game1)
