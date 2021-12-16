@@ -9,16 +9,15 @@ cartes = [["1trefle", "1pique", "1coeur", "1careaux"], ["2trefle", "2pique", "2c
 cartesPasDispo = []
 
 class Game():
-    plateau = []
     def __init__(self, nbJoueurs):
         self.mise = {"mise": 20, "derniereMise": 30}
         self.nbJoueurs = nbJoueurs
-        self.joueurs = {}
+        self.joueurs = []
         self.cartesPalteau = []
         self.nbManches = 0
 
     def ajoutJoueur(self, id , variable):
-        self.joueurs[id] = variable
+        self.joueurs.append(variable)
 
 class Joueur():
     """Class pour le joueur"""
@@ -65,19 +64,27 @@ def jouer(joueur, game):
         jouer(joueur, game)
 
 
-def changementManche(game, ancienJoueur):
+def revelationCartes(game, cmpt=0):
+    if game.nbManches == 0:
+        if cmpt == 3:
+            return
+        revelationCartes(game, cmpt+1)
     nb = randint(0, 13)
     sy = randint(0, 3)
     if cartes[nb][sy] not in cartesPasDispo:
         cartesPasDispo.append(cartes[nb][sy])
         game.cartesPalteau.append(cartes[nb][sy])
         print("\n###############################################\n# La nouvelle carte sur le plateau est",cartes[nb][sy],"#\n###############################################")
-        if ancienJoueur.id < game.nbJoueurs-1:
-            jouer(game.joueurs[ancienJoueur.id+1], game)
-        else:
-            jouer(game.joueurs[0], game)
     else:
-        self.changementManche(game, ancienJoueur)
+        revelationCartes(game)
+
+def changementManche(game, ancienJoueur):
+    revelationCartes(game)
+    game.nbManches += 1
+    if ancienJoueur.id < game.nbJoueurs-1:
+        jouer(game.joueurs[ancienJoueur.id+1], game)
+    else:
+        jouer(game.joueurs[0], game)
 
 
 game1 = Game(2)
