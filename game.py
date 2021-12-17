@@ -1,4 +1,4 @@
-import sys, time, pygame, pygame_menu, poker
+import sys, time, pygame, pygame_menu
 
 FPS = 60
 WINDOW_SIZE = (1920, 1080)
@@ -52,11 +52,11 @@ def jeu():
 
 # Page principal
 menu = pygame_menu.Menu(
-        height=WINDOW_SIZE[1] * 0.55,
+        height=WINDOW_SIZE[1] * 0.4,
         onclose=pygame_menu.events.EXIT,  # Echap
         theme=main_menu_theme,
         title='Accueil',
-        width=WINDOW_SIZE[0] * 0.4
+        width=WINDOW_SIZE[0] * 0.3
     )
 
 # Page paramètres
@@ -101,7 +101,6 @@ menu_serveur.add.button('---')
 menu_serveur.add.button('Créer une partie', menu_creationPartie)
 
 # Boutons de la page principal
-menu.add.image("./img/Logo.png", scale=(0.12, 0.12))
 menu.add.button('Jouer', menu_serveur)
 menu.add.text_input('Pseudo : ', default='')
 menu.add.selector('Couleur des cartes : ', [('Rouge', 1), ('Bleu', 2)], onchange=set_cartes)
