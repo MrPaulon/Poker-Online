@@ -43,14 +43,34 @@ def jeu():
     myfont = pygame.font.SysFont('Open Sans', 40)
     logs = myfont.render('Max vient de relancer avec 240 jetons' , True , (255, 255, 255))
     solde = myfont.render('Solde: 500', True, (255, 255, 255))
+    iconCoins = pygame.image.load("./img/Icons/coins.png").convert_alpha()
     carte1joueur = pygame.image.load("./img/Cartes/2Coeur.png").convert_alpha()
     carte2joueur = pygame.image.load("./img/Cartes/2Coeur.png").convert_alpha()
+    textBtnRelancer = myfont.render('Relancer' , True , (255, 255, 255))
+    textBtnRelancerSolde = myfont.render('60' , True , (255, 255, 255))
     statut = True
     while statut:
         surface.blit(pygame.transform.scale(BackGround.image, (1920, 1080)), BackGround.rect)
+        #Background logs
         pygame.draw.rect(surface, (16, 16, 16), pygame.Rect(10, 10, 550, 50), 0, 15)
+        #Background Solde
+        ##Border Back Solde
+        pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1709, 9, 193, 52), 0, 15)
+        pygame.draw.rect(surface, (16, 16, 16), pygame.Rect(1710, 10, 190, 50), 0, 15)
+        ###################################################
+        ## Boutons
+        #- Btn Relancer
+        pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1720, 990, 193, 82), 0, 10)
+        surface.blit(textBtnRelancer, (1750, 1000))
+        surface.blit(textBtnRelancerSolde, (1800, 1030))
+        #- Btn Suivre
+        pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1524, 990, 193, 82), 0, 10)
+        #- Btn Coucher
+        pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1720, 905, 193, 82), 0, 10)
+        ###################################################
         surface.blit(logs, (25,20))
-        surface.blit(solde, (1750,0))
+        surface.blit(solde, (1750,23))
+        surface.blit(iconCoins, (1720,23))
         surface.blit(carte1joueur, (815, 950))
         surface.blit(carte2joueur, (935, 950))
         for event in pygame.event.get():
