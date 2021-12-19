@@ -40,16 +40,19 @@ def jeu():
     menu.disable()
     pygame.display.update()
     pygame.font.init()
-    myfont = pygame.font.SysFont('Comic Sans MS', 30)
-    text = myfont.render('<-' , True , (255, 255, 255))
-    image = pygame.image.load("./img/Cartes/2Coeur.png").convert_alpha()
-    image2 = pygame.image.load("./img/Cartes/2Coeur.png").convert_alpha()
+    myfont = pygame.font.SysFont('Open Sans', 40)
+    logs = myfont.render('Max vient de relancer avec 240 jetons' , True , (255, 255, 255))
+    solde = myfont.render('Solde: 500', True, (255, 255, 255))
+    carte1joueur = pygame.image.load("./img/Cartes/2Coeur.png").convert_alpha()
+    carte2joueur = pygame.image.load("./img/Cartes/2Coeur.png").convert_alpha()
     statut = True
     while statut:
         surface.blit(pygame.transform.scale(BackGround.image, (1920, 1080)), BackGround.rect)
-        surface.blit(text, (0,0))
-        surface.blit(image, (815, 950))
-        surface.blit(image2, (935, 950))
+        pygame.draw.rect(surface, (16, 16, 16), pygame.Rect(10, 10, 550, 50), 0, 15)
+        surface.blit(logs, (25,20))
+        surface.blit(solde, (1750,0))
+        surface.blit(carte1joueur, (815, 950))
+        surface.blit(carte2joueur, (935, 950))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
