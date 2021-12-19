@@ -1,4 +1,5 @@
 import sys, time, pygame, pygame_menu
+from pygame_menu.themes import TRANSPARENT_COLOR
 
 FPS = 60
 WINDOW_SIZE = (1920, 1080)
@@ -34,20 +35,30 @@ class Background(pygame.sprite.Sprite):
 
 BackGround = Background('./img/TableJeux/7.png', [0,0])
 
+
+# Jeu
 def jeu():
     menu.disable()
     pygame.display.update()
     pygame.font.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 30)
-    textsurface = myfont.render('Some Text', False, (255, 255, 255))
+    text = myfont.render('<-' , True , (255, 255, 255))
+    image = pygame.image.load("./img/Cartes/2Coeur.png").convert_alpha()
+    image2 = pygame.image.load("./img/Cartes/2Coeur.png").convert_alpha()
     statut = True
-
     while statut:
         surface.blit(pygame.transform.scale(BackGround.image, (1920, 1080)), BackGround.rect)
-        surface.blit(textsurface,(0,0))
+        surface.blit(text, (0,0))
+        surface.blit(image, (815, 950))
+        surface.blit(image, (935, 950))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                statut = False
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    statut = False
+                    menu.enable()                  
         pygame.display.flip()
 
 # Page principal
