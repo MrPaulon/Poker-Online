@@ -29,7 +29,6 @@ class Background(pygame.sprite.Sprite):
     def __init__(self, image_file, location):
         pygame.sprite.Sprite.__init__(self)  #call Sprite initializer
         self.image = pygame.image.load(image_file)
-        #self.image = pygame.transform.scale(image, (1920, 1080))
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
 
@@ -50,7 +49,7 @@ def jeu():
         surface.blit(pygame.transform.scale(BackGround.image, (1920, 1080)), BackGround.rect)
         surface.blit(text, (0,0))
         surface.blit(image, (815, 950))
-        surface.blit(image, (935, 950))
+        surface.blit(image2, (935, 950))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
