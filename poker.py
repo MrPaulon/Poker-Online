@@ -92,15 +92,17 @@ def finPartie(game):
     print("Liste test",test)
     print("Combi N1", combi["quinteFlushRoyale"])
     compteur =0
-    for i in range(len(combi["quinteFlushRoyale"])):
-        if compteur == 4:
-            print("ok")
-        else:
-            if combi["quinteFlushRoyale"][i] not in test:
-                print("Salade")
-                return
-            else:
-                compteur+=1
+    for k in range(len(game.joueurs)):
+        for l in range(len(combi)):
+            for m in range(len(combi[l])):
+                if compteur == 4:
+                    print("ok")
+                else:
+                    if combi[l][m] not in test:
+                        print("Salade")
+                        return
+                    else:
+                        compteur+=1
 
 
 def changementManche(game):

@@ -47,7 +47,6 @@ def jeu():
     carte1joueur = pygame.image.load("./img/Cartes/2Coeur.png").convert_alpha()
     carte2joueur = pygame.image.load("./img/Cartes/2Coeur.png").convert_alpha()
     textBtnRelancer = myfont.render('Relancer' , True , (255, 255, 255))
-    textBtnRelancerSolde = myfont.render('60' , True , (255, 255, 255))
     statut = True
     while statut:
         surface.blit(pygame.transform.scale(BackGround.image, (1920, 1080)), BackGround.rect)
@@ -60,13 +59,12 @@ def jeu():
         ###################################################
         ## Boutons
         #- Btn Relancer
-        pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1720, 990, 193, 82), 0, 10)
-        surface.blit(textBtnRelancer, (1750, 1000))
-        surface.blit(textBtnRelancerSolde, (1800, 1030))
+        pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1720, 1020, 193, 52), 0, 10)
+        surface.blit(textBtnRelancer, (1752, 1032))
         #- Btn Suivre
-        pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1524, 990, 193, 82), 0, 10)
+        pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1524, 1020, 193, 52), 0, 10)
         #- Btn Coucher
-        pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1720, 905, 193, 82), 0, 10)
+        pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1720, 965, 193, 52), 0, 10)
         ###################################################
         surface.blit(logs, (25,20))
         surface.blit(solde, (1750,23))
