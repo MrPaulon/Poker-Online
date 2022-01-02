@@ -6,7 +6,7 @@ from random import *
 #fonctions
 cartes = [["1trefle", "1pique", "1coeur", "1careaux"], ["2trefle", "2pique", "2coeur", "2carreaux"], ["3trefle", "3pique", "3coeur", "3carreaux"], ["4trefle", "4pique", "4coeur", "4carreaux"], ["4trefle", "4pique", "4coeur", "4carreaux"], ["5trefle", "5pique", "5coeur", "5carreaux"], ["6trefle", "6pique", "6coeur", "6carreaux"], ["7trefle", "7pique", "7coeur", "7carreaux"], ["8trefle", "8pique", "8coeur", "8carreaux"], ["9trefle", "9pique", "9coeur", "9carreaux"], ["10trefle", "10pique", "10coeur", "10carreaux"], ["Vtrefle", "Vpique", "Vcoeur", "Vcarreaux"], ["Qtrefle", "Qpique", "Qcoeur", "Qcarreaux"], ["Rtrefle", "Rpique", "Rcoeur", "Rcarreaux"]]
 
-combi = {"quinteFlushRoyale": ["10coeur", "Vcoeur", "Qcoeur", "Rcoeur", "1coeur"]}
+combi = {"quinteFlushRoyale": ["10coeur", "Vcoeur", "Qcoeur", "Rcoeur", "1coeur"], "quinteFlush": ["8coeur", "9coeur", "10coeur", "Vcoeur", "Qcoeur"], "carre": ["8coeur", "9coeur", "10coeur", "Vcoeur", "Qcoeur"]}
 
 cartesPasDispo = []
 
@@ -46,15 +46,15 @@ class Joueur():
 def jouer(joueur, game):
     print("\n##- \n ", joueur.nom, "c'est à vous de jouer ! \n-##")
     print("La mise actuelle du plateau est de:", game.mise["derniereMise"])
-    manche = int(input("Que voulez vous faire ? \n [1] Vous couchez \n [2] Suivre la mise\n [3] Relancer \n"))
-    if manche == 1:
+    choix = int(input("Que voulez vous faire ? \n [1] Vous couchez \n [2] Suivre la mise\n [3] Relancer \n"))
+    if choix == 1:
         print("Vous vous êtes couchez")
         changementTour(game, joueur)
-    elif manche == 2:
-        joueur.solde -= 200
+    elif choix == 2:
+        joueur.solde -= game.mise["derniereMise"]
         print("Vous avez suivis, votre solde est actuellement de", joueur.solde)
         changementTour(game, joueur)
-    elif manche == 3:
+    elif choix == 3:
         montant = int(input("De combien voulez-vous relancez: "))
         joueur.solde -= montant
         game.mise["derniereMise"] = montant
@@ -82,27 +82,21 @@ def revelationCartes(game, cmpt=0):
 
 def finPartie(game):
     print("Fin de la partie")
-    test = []
-    for i in range(0, len(game.cartesPlateau)):
-        test.append(game.cartesPlateau[i])
-    for j in range(0, len(mrpaulon.main)):     
-        test.append(game.cartesPlateau[j])
-    print("Cartes plateau: ",game.cartesPlateau)
-    print("Cartes joueur",mrpaulon.main)
-    print("Liste test",test)
-    print("Combi N1", combi["quinteFlushRoyale"])
-    compteur =0
-    for k in range(len(game.joueurs)):
-        for l in range(len(combi)):
-            for m in range(len(combi[l])):
-                if compteur == 4:
-                    print("ok")
-                else:
-                    if combi[l][m] not in test:
-                        print("Salade")
-                        return
-                    else:
-                        compteur+=1
+    for i in range(len(game.joueurs)):
+        joueur = game.joueurs[i-1]
+        liste = []
+        for y in range(len(game.cartesPlateau)):
+            liste.append(game.cartesPlateau[y])
+        for j in range(len(joueur.main)):
+            liste.append(joueur.main[j])
+        for cle,valeur in combi.items():
+            print("Valeur de la clé:", valeur,"\nListe:", liste)
+            if valeur in liste:
+                print("ok")
+                if cle == "quinteFlushRoyale":
+                    print("Okok")
+            else:
+                print(joueur.nom, "salade")
 
 
 def changementManche(game):
@@ -124,6 +118,7 @@ game1 = Game(2)
 mrpaulon = Joueur("MrPaulon", 0)
 mrpaulon.distribution()
 maxgp78 = Joueur("Maxgp78", 1)
+maxgp78.distribution()
 game1.ajoutJoueur(0, mrpaulon)
 game1.ajoutJoueur(1, maxgp78)
 jouer(mrpaulon, game1)
