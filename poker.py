@@ -4,7 +4,7 @@ import random
 from random import *
 
 #fonctions
-cartes = [["1trefle", "1pique", "1coeur", "1careaux"], ["2trefle", "2pique", "2coeur", "2carreaux"], ["3trefle", "3pique", "3coeur", "3carreaux"], ["4trefle", "4pique", "4coeur", "4carreaux"], ["4trefle", "4pique", "4coeur", "4carreaux"], ["5trefle", "5pique", "5coeur", "5carreaux"], ["6trefle", "6pique", "6coeur", "6carreaux"], ["7trefle", "7pique", "7coeur", "7carreaux"], ["8trefle", "8pique", "8coeur", "8carreaux"], ["9trefle", "9pique", "9coeur", "9carreaux"], ["10trefle", "10pique", "10coeur", "10carreaux"], ["Vtrefle", "Vpique", "Vcoeur", "Vcarreaux"], ["Qtrefle", "Qpique", "Qcoeur", "Qcarreaux"], ["Rtrefle", "Rpique", "Rcoeur", "Rcarreaux"]]
+cartes = [[["1trefle", (14, "T")], ["1pique", (14, "P")], ["1coeur", (14, "C")], ["1carreaux", (14, "K")]], [["2trefle", (2, "T")], ["2pique", (2, "P")], ["2coeur", (2, "C")], ["2carreaux", (2, "K")]], [["3trefle", (3, "T")], ["3pique", (3, "P")], ["3coeur", (3, "C")], ["3carreaux", (3, "K")]], [["4trefle", (4, "T")], ["4pique", (4, "P")], ["4coeur", (4, "C")], ["4carreaux", (4, "K")]], [["5trefle", (5, "T")], ["5pique", (5, "P")], ["5coeur", (5, "C")], ["5carreaux", (5, "K")]],[["6trefle", (6, "T")], ["6pique", (6, "P")], ["6coeur", (6, "C")], ["6carreaux", (6, "K")]], [["7trefle", (7, "T")], ["7pique", (7, "P")], ["7coeur", (7, "C")], ["7carreaux", (7, "K")]], [["8trefle", (8, "T")], ["8pique", (8, "P")], ["8coeur", (8, "C")], ["8carreaux", (8, "K")]], [["9trefle", (9, "T")], ["9pique", (9, "P")], ["9coeur", (9, "C")], ["9carreaux", (9, "K")]], [["10trefle", (10, "T")], ["10pique", (10, "P")], ["10coeur", (10, "C")], ["10carreaux", (10, "K")]], [["Vtrefle", (11, "T")], ["Vpique", (11, "P")], ["Vcoeur", (11, "C")], ["Vcarreaux", (11, "K")]], [["Qtrefle", (12, "T")], ["Qpique", (12, "P")], ["Qcoeur", (12, "C")], ["Qcarreaux", (12, "K")]], [["Rtrefle", (13, "T")], ["Rpique", (13, "P")], ["Rcoeur", (13, "C")], ["Rcarreaux", (13, "K")]]]
 
 combi = {"quinteFlushRoyale": ["10coeur", "Vcoeur", "Qcoeur", "Rcoeur", "1coeur"], "quinteFlush": ["8coeur", "9coeur", "10coeur", "Vcoeur", "Qcoeur"], "carre": ["8coeur", "9coeur", "10coeur", "Vcoeur", "Qcoeur"]}
 
@@ -17,6 +17,7 @@ class Game():
         self.joueurs = []
         self.cartesPlateau = []
         self.nbManches = 0
+        self.derniereAction = 0
 
     def ajoutJoueur(self, id , variable):
         self.joueurs.append(variable)
@@ -34,11 +35,11 @@ class Joueur():
         if len(self.main) == 2:
             print(self.main)
             return
-        nb = randint(0, 13)
+        nb = randint(0, 12)
         sy = randint(0, 3)
-        if cartes[nb][sy] not in cartesPasDispo:
-            cartesPasDispo.append(cartes[nb][sy])
-            self.main.append(cartes[nb][sy])
+        if cartes[nb][sy][0] not in cartesPasDispo:
+            cartesPasDispo.append(cartes[nb][sy][0])
+            self.main.append(cartes[nb][sy][0])
             self.distribution()
         else:
             self.distribution()
@@ -60,6 +61,7 @@ def jouer(joueur, game):
         game.mise["derniereMise"] = montant
         game.mise["mise"] = montant
         print("Vous avez relancez avec", montant, "\nvotre solde est actuellement de", joueur.solde)
+        game.derniereAction = 3
         changementTour(game, joueur)
     else:
         print("Aucune action ne correspond, veuillez réessayer !")
@@ -73,10 +75,10 @@ def revelationCartes(game, cmpt=0):
         revelationCartes(game, cmpt+1)
     nb = randint(0, 13)
     sy = randint(0, 3)
-    if cartes[nb][sy] not in cartesPasDispo:
-        cartesPasDispo.append(cartes[nb][sy])
-        game.cartesPlateau.append(cartes[nb][sy])
-        print("\n###############################################\n# La nouvelle carte sur le plateau est",cartes[nb][sy],"#\n###############################################")
+    if cartes[nb][sy][0] not in cartesPasDispo:
+        cartesPasDispo.append(cartes[nb][sy][0])
+        game.cartesPlateau.append(cartes[nb][sy][0])
+        print("\n###############################################\n# La nouvelle carte sur le plateau est",cartes[nb][sy][0],"#\n###############################################")
     else:
         revelationCartes(game)
 
