@@ -230,9 +230,9 @@ def changementTour(game, ancienJoueur):
 
 game1 = Game(2)
 MrPaulon = Joueur("MrPaulon", 0)
-MrPaulon.main = ["Vpique","Vcoeur"]
+MrPaulon.distribution()
 Maxgp78 = Joueur("Maxgp78", 1)
-Maxgp78.main = ["3pique","3coeur"]
+Maxgp78.distribution()
 game1.ajoutJoueur(0, MrPaulon)
 game1.ajoutJoueur(1, Maxgp78)
 jouer(MrPaulon, game1)
