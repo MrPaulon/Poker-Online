@@ -9,16 +9,22 @@ cartes = [[["1trefle", (14, "T")], ["1pique", (14, "P")], ["1coeur", (14, "C")],
 cartesPasDispo = []
 
 class Game():
-    def __init__(self, nbJoueurs):
+    def __init__(self, nom, nbJoueurs):
+        self.nom = nom
         self.mise = {"mise": 0, "derniereMise": 20}
         self.nbJoueurs = nbJoueurs
         self.joueurs = []
+        self.joueursPasCoucher = []
         self.cartesPlateau = []
         self.nbManches = 0
         self.derniereAction = 0
 
-    def ajoutJoueur(self, id , variable):
+    def ajoutJoueur(self, variable):
         self.joueurs.append(variable)
+        self.joueursPasCoucher.append(variable)
+
+def ajoutJoueur(joueur, game):
+    game.ajoutJoueur(0, joueur)
 
 class Joueur():
     """Class pour le joueur"""
@@ -48,6 +54,8 @@ def jouer(joueur, game):
     choix = int(input("Que voulez vous faire ? \n [1] Vous couchez \n [2] Suivre la mise\n [3] Relancer \n"))
     if choix == 1:
         print("Vous vous êtes couchez")
+        game.joueursPasCoucher.remove(joueur)
+        print(game.joueursPasCoucher)
         changementTour(game, joueur)
     elif choix == 2:
         joueur.solde -= game.mise["derniereMise"]
@@ -84,8 +92,8 @@ def revelationCartes(game, cmpt=0):
 def finPartie(game):
     print("Fin de la partie")
     gagnant = {'joueur':[], 'points': 0}
-    for i in range(len(game.joueurs)):
-        joueur = game.joueurs[i-1]
+    for i in range(len(game.joueursPasCoucher)):
+        joueur = game.joueursPasCoucher[i-1]
         liste = []
         couleurs = []
         valeurs = []
@@ -134,26 +142,23 @@ def finPartie(game):
             if nbfois==0:
                 if coup[i][1]==0:
                     if len(suite)>=5:
-                        if suite in couppossible:
+                        if suite in suitepossible:
                             print("Quinte")
                             nbfois=1
                             quinte+=1
                     else:
-                        l[i][1]==0
+                        coup[i][1]==0
                         suite.clear()
-                if l[i][1]==1 or l[i][1]==2 or l[i][1]==3:
-                    suite.append(l[i][0])
+                if coup[i][1]==1 or coup[i][1]==2 or coup[i][1]==3:
+                    suite.append(coup[i][0])
         for i in range(2,15): ##calcul le nombre de fois qu'un nombre apparaît
             coup.append((i,valeurs.count(i)))
         for i in range(len(coup)):
             if coup[i][1]==2:
-                print("zebi")
                 paire+=1
             if coup[i][1]==3:
-                print("zebibi")
                 brelan+=1
             if coup[i][1]==4:
-                print("TIBOINSHAPE")
                 carré+=1
         if paire == 0 and brelan == 0 and carré == 0 and quinte ==0:
             print("Carte Haute")
@@ -205,34 +210,34 @@ def finPartie(game):
         pass
     print(gagnant)
     for r in range(len(gagnant['joueur'])):
-        for e in range(len(game.joueurs)):
+        for e in range(len(game.joueursPasCoucher)):
             nombrejoueursgagnant = len(gagnant['joueur'])
-            if game.joueurs[e].nom == gagnant['joueur'][r]:
-                joueurgagnant = game.joueurs[e]
+            if game.joueursPasCoucher[e].nom == gagnant['joueur'][r]:
+                joueurgagnant = game.joueursPasCoucher[e]
                 joueurgagnant.solde += game.mise['mise'] / nombrejoueursgagnant
                 print(game.mise['mise'])
                 print(joueurgagnant.solde)
+    game.joueursPasCoucher = []
+    game.cartesPlateau = []
+    game.nbManches = 0
+    game.mise['derniereMise'] = 20
+    for a in range(len(game.joueurs)):
+        game.joueursPasCoucher.append(game.joueurs[a])
+    jouer(game.joueursPasCoucher[0], game)
 
 def changementManche(game):
     revelationCartes(game)
     game.nbManches += 1
 
 def changementTour(game, ancienJoueur):
-    if ancienJoueur.id < game.nbJoueurs-1:
-        jouer(game.joueurs[ancienJoueur.id+1], game)
+    if game.joueurs.index(ancienJoueur) < game.nbJoueurs-1:
+        if game.joueurs[game.joueurs.index(ancienJoueur)] in game.joueursPasCoucher:
+            jouer(game.joueursPasCoucher[game.joueursPasCoucher.index(ancienJoueur)+1], game)
+        else:
+            changementTour(game, game.joueurs[game.joueurs.index(ancienJoueur)+1])
     else:
         if len(game.cartesPlateau) == 5:
             finPartie(game)
         else:
             changementManche(game)
-            jouer(game.joueurs[0], game)
-
-
-game1 = Game(2)
-MrPaulon = Joueur("MrPaulon", 0)
-MrPaulon.distribution()
-Maxgp78 = Joueur("Maxgp78", 1)
-Maxgp78.distribution()
-game1.ajoutJoueur(0, MrPaulon)
-game1.ajoutJoueur(1, Maxgp78)
-jouer(MrPaulon, game1)
+            jouer(game.joueursPasCoucher[0], game)
