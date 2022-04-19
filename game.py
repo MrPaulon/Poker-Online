@@ -1,10 +1,8 @@
 from random import Random, randint
-import sys, time, pygame, pygame_menu, poker, client
+import sys, time, pygame, pygame_menu, client
 from pygame_menu.themes import TRANSPARENT_COLOR
 
 FPS = 60
-WINDOW_SIZE = (1920, 1080)
-
 main_menu_theme = pygame_menu.themes.THEME_DARK.copy()
 main_menu_theme.set_background_color_opacity(0.75)  # 50% opacité
 clock = pygame.time.Clock()
@@ -12,9 +10,12 @@ clock.tick(FPS)
 idPlayer = "Joueur#"+str(randint(1, 9))+str(randint(1, 9))+str(randint(1, 9))+str(randint(1, 9))+""
 
 pygame.init()
-surface = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
+infoObject = pygame.display.Info()
+surface = pygame.display.set_mode((infoObject.current_w, infoObject.current_h), pygame.FULLSCREEN)
+WINDOW_SIZE = (1920, 1080)
+FENETRE = (infoObject.current_w, infoObject.current_h)
 pygame.mixer.music.load('./music/Menu.wav')
-#pygame.mixer.music.play(loops=-1)
+pygame.mixer.music.play(loops=-1)
 pygame.mixer.music.set_volume(0.1)
 
 def set_cartes(value, a):
@@ -25,7 +26,7 @@ def start_the_game():
 
 def creationPartie():
     client.sendData([client.idClient, 'creerPartie', 'game01', 2])
-    jeu() 
+    jeu()
 
 # Image de fond
 background_image = pygame_menu.BaseImage(
@@ -51,7 +52,7 @@ def jeu():
     menu.disable()
     pygame.display.update()
     pygame.font.init()
-    myfont = pygame.font.SysFont('Open Sans', 40)
+    myfont = pygame.font.SysFont('Open Sans', int(FENETRE[1]*0.037))
     solde = myfont.render('Solde: '+str('500')+'', True, (255, 255, 255))
     iconCoins = pygame.image.load("./img/Icons/coins.png").convert_alpha()
     carte1joueur = pygame.image.load("./img/Cartes/" + mainjoueur[0] +".png").convert_alpha()
@@ -62,35 +63,83 @@ def jeu():
     logs = myfont.render('En attente de + joueurs' , True , (255, 255, 255))
     statut = True
     while statut:
-        surface.blit(pygame.transform.scale(BackGround.image, (1920, 1080)), BackGround.rect)
+        cartesPlateau = client.sendData([client.idClient, 'getCartesPlateau', 'game01'])
+        if len(cartesPlateau) >= 1:
+            carte1plateau = pygame.image.load("./img/Cartes/"+cartesPlateau[0]+".png").convert_alpha()
+            carte1plateau = pygame.transform.scale(carte1plateau, (47, 62))
+            if len(cartesPlateau) >= 2:
+                carte2plateau = pygame.image.load("./img/Cartes/"+cartesPlateau[1]+".png").convert_alpha()
+                carte2plateau = pygame.transform.scale(carte2plateau, (47, 62))
+                if len(cartesPlateau) >= 3:
+                    carte3plateau = pygame.image.load("./img/Cartes/"+cartesPlateau[2]+".png").convert_alpha()
+                    carte3plateau = pygame.transform.scale(carte3plateau, (47, 62))
+                    if len(cartesPlateau) >= 4:
+                        carte4plateau = pygame.image.load("./img/Cartes/"+cartesPlateau[3]+".png").convert_alpha()
+                        carte4plateau = pygame.transform.scale(carte4plateau, (47, 62))
+                        if len(cartesPlateau) >= 5:
+                            carte5plateau = pygame.image.load("./img/Cartes/"+cartesPlateau[4]+".png").convert_alpha()
+                            carte5plateau = pygame.transform.scale(carte5plateau, (47, 62))
+                        else:
+                            carte5plateau = pygame.image.load("./img/Cartes/dos.png").convert_alpha()
+                            carte5plateau = pygame.transform.scale(carte5plateau, (47, 62))
+                    else:
+                        carte4plateau = pygame.image.load("./img/Cartes/dos.png").convert_alpha()
+                        carte4plateau = pygame.transform.scale(carte4plateau, (47, 62))
+                else:
+                    carte3plateau = pygame.image.load("./img/Cartes/dos.png").convert_alpha()
+                    carte3plateau = pygame.transform.scale(carte3plateau, (47, 62))
+            else:
+                carte2plateau = pygame.image.load("./img/Cartes/dos.png").convert_alpha()
+                carte2plateau = pygame.transform.scale(carte2plateau, (47, 62))
+        else:
+            carte1plateau = pygame.image.load("./img/Cartes/dos.png").convert_alpha()
+            carte1plateau = pygame.transform.scale(carte1plateau, (47, 62))
+            carte2plateau = pygame.image.load("./img/Cartes/dos.png").convert_alpha()
+            carte2plateau = pygame.transform.scale(carte2plateau, (47, 62))
+            carte3plateau = pygame.image.load("./img/Cartes/dos.png").convert_alpha()
+            carte3plateau = pygame.transform.scale(carte3plateau, (47, 62))
+            carte4plateau = pygame.image.load("./img/Cartes/dos.png").convert_alpha()
+            carte4plateau = pygame.transform.scale(carte4plateau, (47, 62))
+            carte5plateau = pygame.image.load("./img/Cartes/dos.png").convert_alpha()
+            carte5plateau = pygame.transform.scale(carte5plateau, (47, 62))
+        nbjoueurs = client.getPlayers([client.idClient, 'getNumberPlayer', 'game01'])
+        surface.blit(pygame.transform.scale(BackGround.image, (infoObject.current_w, infoObject.current_h)), BackGround.rect)
         #Background logs
-        pygame.draw.rect(surface, (16, 16, 16), pygame.Rect(10, 10, 550, 50), 0, 15)    
-        if client.getPlayers([client.idClient, 'getNumberPlayer', 'game01']) > 1:
-            #if client.getPlayers([client.idClient, 'getNumberPlayer', 'game01']) > 1:
+        pygame.draw.rect(surface, (16, 16, 16), pygame.Rect(FENETRE[0]*0.008, FENETRE[1]*0.008, FENETRE[0]*0.287, FENETRE[1]*0.0465), 0)
+        if nbjoueurs > 1:
             logs = myfont.render(''+client.getLogs('game01')+'' , True , (255, 255, 255))
             #Background Solde
             ##Border Back Solde
-            pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1709, 9, 193, 52), 0, 15)
-            pygame.draw.rect(surface, (16, 16, 16), pygame.Rect(1710, 10, 190, 50), 0, 15)
+            pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(FENETRE[0]*0.894 , FENETRE[1]*0.008, FENETRE[0]*0.1, FENETRE[1]*0.049), 0)
+            pygame.draw.rect(surface, (16, 16, 16), pygame.Rect(FENETRE[0]*0.895, FENETRE[1]*0.0086, FENETRE[0]*0.098, FENETRE[1]*0.0465), 0)
             ###################################################
             ## Boutons
             #- Btn Relancer
-            pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1720, 1020, 193, 52), 0, 10)
-            surface.blit(textBtnRelancer, (1752, 1032))
+            pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(FENETRE[0]*0.895, FENETRE[1]*0.945, FENETRE[0]*0.1, FENETRE[1]*0.0465), 0)
+            surface.blit(textBtnRelancer, (FENETRE[0]*0.913, FENETRE[1]*0.956))
             #- Btn Suivre
-            pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1524, 1020, 193, 52), 0, 10)
-            surface.blit(textBtnSuivre, (1570, 1032))
+            pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(FENETRE[0]*0.792, FENETRE[1]*0.945, FENETRE[0]*0.1, FENETRE[1]*0.0465), 0)
+            surface.blit(textBtnSuivre, (FENETRE[0]*0.818, FENETRE[1]*0.956))
             #- Btn Coucher
-            pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(1720, 965, 193, 52), 0, 10)
-            surface.blit(textBtnCoucher,(1755, 977))
+            pygame.draw.rect(surface, (239, 45, 45), pygame.Rect(FENETRE[0]*0.895, FENETRE[1]*0.894, FENETRE[0]*0.1, FENETRE[1]*0.0465), 0)
+            surface.blit(textBtnCoucher,(FENETRE[0]*0.913, FENETRE[1]*0.904))
             ###################################################
-            surface.blit(logs, (25,20))
-            surface.blit(solde, (1750,23))
-            surface.blit(iconCoins, (1720,23))
-            surface.blit(carte1joueur, (810, 922))
-            surface.blit(carte2joueur, (940, 922))
+            surface.blit(logs, (FENETRE[0]*0.02,FENETRE[1]*0.018))
+            surface.blit(solde, (FENETRE[0]*0.918,FENETRE[1]*0.022))
+            iconCoins = pygame.transform.scale(iconCoins, (int(FENETRE[1]*0.023), int(FENETRE[1]*0.023)))
+            surface.blit(iconCoins, (FENETRE[0]*0.9,FENETRE[1]*0.022))
+            carte1joueur = pygame.transform.scale(carte1joueur, (int(FENETRE[0]*0.095), int(FENETRE[1]*0.22)))
+            carte2joueur = pygame.transform.scale(carte2joueur, (int(FENETRE[0]*0.095), int(FENETRE[1]*0.22)))
+            surface.blit(carte1joueur, (FENETRE[0]*0.422, FENETRE[1]*0.852))
+            surface.blit(carte2joueur, (FENETRE[0]*0.49, FENETRE[1]*0.852))
+            ##
+            surface.blit(carte1plateau, (FENETRE[0]*0.437,FENETRE[1]*0.45))
+            surface.blit(carte2plateau, (FENETRE[0]*0.463,FENETRE[1]*0.45))
+            surface.blit(carte3plateau, (FENETRE[0]*0.489,FENETRE[1]*0.45))
+            surface.blit(carte4plateau, (FENETRE[0]*0.515,FENETRE[1]*0.45))
+            surface.blit(carte5plateau, (FENETRE[0]*0.541,FENETRE[1]*0.45))
         else:
-            surface.blit(logs, (25,20))
+            surface.blit(logs, (FENETRE[0]*0.02,FENETRE[0]*0.016))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -103,7 +152,7 @@ def jeu():
                     pygame.mixer.music.load('./music/Menu.wav')
                     pygame.mixer.music.play(loops=-1)
                     statut = False
-                    menu.enable()                  
+                    menu.enable()
         pygame.display.flip()
 
 # Page principal

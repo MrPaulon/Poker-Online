@@ -1,6 +1,6 @@
-import socket,threading,poker
+# coding: utf-8
 
-from pygame.event import wait
+import socket,threading,poker
 
 clientConnus = {}
 gameConnus = []
@@ -22,7 +22,7 @@ class ClientThread(threading.Thread):
             r = self.clientsocket.recv(2048)
             r = r.decode("utf8")
             r = eval(r)
-            if r[0] != "logs" and r[1] != "getNumberPlayer":
+            if r[0] != "logs" and r[1] != "getNumberPlayer" and r[1] != "getCartesPlateau":
                 print(r)
             if r[0] == "Break":
                 break
@@ -77,6 +77,14 @@ class ClientThread(threading.Thread):
                     data=str(data)
                     data = data.encode("utf8")
                     self.clientsocket.sendall(data)
+                elif r[1] == "getCartesPlateau":
+                    game = r[2]
+                    for y in range(len(gameConnus)):
+                        if game == gameConnus[y][0].nom:
+                            data = gameConnus[y][0].cartesPlateau
+                    data=str(data)
+                    data = data.encode("utf8")
+                    self.clientsocket.sendall(data)
                 else:
                     data = "Recu"
                     data = data.encode("utf8")
@@ -85,7 +93,7 @@ class ClientThread(threading.Thread):
 
 tcpsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcpsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-tcpsock.bind(("127.0.0.1",12086))
+tcpsock.bind(("172.20.36.56",12086))
 
 while True:
     tcpsock.listen(10)
