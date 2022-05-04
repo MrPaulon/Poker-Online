@@ -35,6 +35,10 @@ class Joueur():
         self.id = id
         self.blind = 0
 
+######################################################
+## Cette méthode donner des cartes à chaque joueur ##
+######################################################
+
     def distribution(self):
         if len(self.main) == 2:
             print(self.nom,self.main)
@@ -47,6 +51,10 @@ class Joueur():
             self.distribution()
         else:
             self.distribution()
+
+###############################################################################
+## Cette fonction sert à effectuer les différentes ations possibles au poker ##
+###############################################################################
 
 def jouer(joueur, game):
     print("\n##- \n ", joueur.nom, "c'est à vous de jouer ! \n-##")
@@ -74,6 +82,9 @@ def jouer(joueur, game):
         print("Aucune action ne correspond, veuillez réessayer !")
         jouer(joueur, game)
 
+####################################################################
+## Cette fonction sert à révéler les cartes posées sur le plateau ##
+####################################################################
 
 def revelationCartes(game, cmpt=0):
     if game.nbManches == 0:
@@ -88,6 +99,11 @@ def revelationCartes(game, cmpt=0):
         print("\n###############################################\n# La nouvelle carte sur le plateau est",cartes[nb][sy][0],"#\n###############################################")
     else:
         revelationCartes(game)
+
+###############################################################################################################################################################################
+## Dans cette partie nous regardons chaque main avec les cartes sur le plateau afin de chercher les combinaisons pour chaque joueur et ensuite nous définissons le vainqueur ##
+###############################################################################################################################################################################
+
 
 def finPartie(game):
     print("Fin de la partie")
@@ -160,6 +176,7 @@ def finPartie(game):
                 brelan+=1
             if coup[i][1]==4:
                 carré+=1
+        ##Cherche la/les combinaisons##
         if paire == 0 and brelan == 0 and carré == 0 and quinte ==0:
             print("Carte Haute")
             temppoints = 1
@@ -225,9 +242,13 @@ def finPartie(game):
         game.joueursPasCoucher.append(game.joueurs[a])
     jouer(game.joueursPasCoucher[0], game)
 
+## fonction permettant le changement de manche ##
+
 def changementManche(game):
     revelationCartes(game)
     game.nbManches += 1
+
+## fonction permettant le changement de joueurs, pour que chaque joueur joue ##
 
 def changementTour(game, ancienJoueur):
     if game.joueurs.index(ancienJoueur) < game.nbJoueurs-1:
