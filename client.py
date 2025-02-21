@@ -7,7 +7,7 @@ from pygame.event import wait
 idClient = "Client#"+str(randint(1, 9))+str(randint(1, 9))+str(randint(1, 9))+str(randint(1, 9))+""
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(("172.20.36.56", 12086))
+s.connect(("127.0.0.1", 55555))
 
 def sendData(data):
     data = str(data)
